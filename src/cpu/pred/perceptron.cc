@@ -52,13 +52,20 @@ namespace branch_prediction
 {
 
 PerceptronBP::PerceptronBP(const PerceptronBPParams &params)
-    : BPredUnit(params),
-      localPredictorSize(params.localPredictorSize),
-      localCtrBits(params.localCtrBits),
-      localPredictorSets(localPredictorSize / localCtrBits),
-      localCtrs(localPredictorSets, SatCounter8(localCtrBits)),
-      indexMask(localPredictorSets - 1)
 {
+    n = params.n;
+    count_perc = params.count_perc;
+    for (int i = 0; i < count_perc; i++) {  
+        vector<int> v1;
+        for (int j = 0; j <= n; j++) { 
+            v1.push_back(0); 
+        }
+        vec.push_back(v1); 
+    }
+    for (int i = 0; i < n; i++) {
+        history.push_back(0);
+    }
+
     if (!isPowerOf2(localPredictorSize)) {
         fatal("Invalid local predictor size!\n");
     }
@@ -82,7 +89,12 @@ void
 PerceptronBP::updateHistories(ThreadID tid, Addr pc, bool uncond,
                          bool taken, Addr target, void * &bp_history)
 {
-// Place holder for a function that is called to update predictor history
+    for (int i = n - 2; i >= 0; i--)
+    {
+        history[i + 1] = history[i];
+    }
+    history[0] = taken ? 1 : -1;
+    // Place holder for a function that is called to update predictor history
 }
 
 
@@ -100,7 +112,7 @@ PerceptronBP::lookup(ThreadID tid, Addr branch_addr, void * &bp_history)
     DPRINTF(Fetch, "prediction is %i.\n",
             (int)counter_val);
 
-    taken = getPrediction(counter_val);
+    taken = getPrediction(local_predictor_idx);
 
     return taken;
 }
@@ -109,42 +121,31 @@ void
 PerceptronBP::update(ThreadID tid, Addr branch_addr, bool taken, void *&bp_history,
                 bool squashed, const StaticInstPtr & inst, Addr target)
 {
-    assert(bp_history == NULL);
-    unsigned local_predictor_idx;
-
-    // No state to restore, and we do not update on the wrong
-    // path.
-    if (squashed) {
-        return;
-    }
-
-    // Update the local predictor.
-    local_predictor_idx = getLocalIndex(branch_addr);
-
-    DPRINTF(Fetch, "Looking up index %#x\n", local_predictor_idx);
-
-    if (taken) {
-        DPRINTF(Fetch, "Branch updated as taken.\n");
-        localCtrs[local_predictor_idx]++;
-    } else {
-        DPRINTF(Fetch, "Branch updated as not taken.\n");
-        localCtrs[local_predictor_idx]--;
+    if (taken != getPrediction(getLocalIndex(branch_addr))) {
+        int t = taken ? 1 : -1;
+        for (int i = 1; i <= n; i++) {
+            weights[current_perc][i] += t * history[i - 1];
+        }
+        weights[current_perc][i] += t;
     }
 }
 
 inline
 bool
-PerceptronBP::getPrediction(uint8_t &count)
+PerceptronBP::getPrediction(int current_perc)
 {
-    // Get the MSB of the count
-    return (count >> (localCtrBits - 1));
+    int sum = weights[current_perc][0];
+    for (int i = 0; i < n; i++) {
+        sum += weights[current_perc][i + 1] * history[i];
+    }
+    return sum >= 0;
 }
 
 inline
 unsigned
 PerceptronBP::getLocalIndex(Addr &branch_addr)
 {
-    return (branch_addr >> instShiftAmt) & indexMask;
+    return (branch_addr >> instShiftAmt) & (count_perc - 1);
 }
 
 
