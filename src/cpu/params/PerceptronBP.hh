@@ -16,6 +16,7 @@ struct PerceptronBPParams
     PerceptronBP * create();
     size_t localPredictorSize;
     size_t localCtrBits;
+    size_t x;
 };
 
 #endif // __PARAMS__PerceptronBP__

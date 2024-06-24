@@ -163,6 +163,7 @@ class PerceptronBP(BranchPredictor):
 
     localPredictorSize = Param.Unsigned(2048, "Size of local predictor")
     localCtrBits = Param.Unsigned(2, "Bits per counter")
+    x = Param.Unsigned(31, 'hello')
 
 class LocalBP(BranchPredictor):
     type = "LocalBP"
