@@ -19,3 +19,4 @@ struct PerceptronBPParams
 };
 
 #endif // __PARAMS__PerceptronBP__
+//test
