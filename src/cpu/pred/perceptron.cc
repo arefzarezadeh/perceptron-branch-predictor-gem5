@@ -66,23 +66,23 @@ PerceptronBP::PerceptronBP(const PerceptronBPParams &params)
         history.push_back(0);
     }
 
-    if (!isPowerOf2(localPredictorSize)) {
-        fatal("Invalid local predictor size!\n");
-    }
+    // if (!isPowerOf2(localPredictorSize)) {
+    //     fatal("Invalid local predictor size!\n");
+    // }
 
-    if (!isPowerOf2(localPredictorSets)) {
-        fatal("Invalid number of local predictor sets! Check localCtrBits.\n");
-    }
+    // if (!isPowerOf2(localPredictorSets)) {
+    //     fatal("Invalid number of local predictor sets! Check localCtrBits.\n");
+    // }
 
-    DPRINTF(Fetch, "index mask: %#x\n", indexMask);
+    // DPRINTF(Fetch, "index mask: %#x\n", indexMask);
 
-    DPRINTF(Fetch, "local predictor size: %i\n",
-            localPredictorSize);
+    // DPRINTF(Fetch, "local predictor size: %i\n",
+    //         localPredictorSize);
 
-    DPRINTF(Fetch, "local counter bits: %i\n", localCtrBits);
+    // DPRINTF(Fetch, "local counter bits: %i\n", localCtrBits);
 
-    DPRINTF(Fetch, "instruction shift amount: %i\n",
-            instShiftAmt);
+    // DPRINTF(Fetch, "instruction shift amount: %i\n",
+    //         instShiftAmt);
 }
 
 void
