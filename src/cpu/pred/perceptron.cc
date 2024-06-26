@@ -52,23 +52,23 @@ namespace branch_prediction
 {
 
 PerceptronBP::PerceptronBP(const PerceptronBPParams &params)
-    :   n(params.n),
-        count_perc(params.count_perc),
-        weights(count_perc, std::vector<int>(n + 1)),
-        history(n, int)
+    // :   n(params.n),
+    //     count_perc(params.count_perc),
+    //     weights(count_perc, std::vector<int>(n + 1)),
+    //     history(n, int)
 {
-    // n = params.n;
-    // count_perc = params.count_perc;
-    // for (int i = 0; i < count_perc; i++) {  
-    //     std::vector<SatCounter8> v1;
-    //     for (int j = 0; j <= n; j++) { 
-    //         v1.push_back(0); 
-    //     }
-    //     weights.push_back(v1); 
-    // }
-    // for (int i = 0; i < n; i++) {
-    //     history.push_back(0);
-    // }
+    n = params.n;
+    count_perc = params.count_perc;
+    for (int i = 0; i < count_perc; i++) {  
+        std::vector<int> v1;
+        for (int j = 0; j <= n; j++) { 
+            v1.push_back(0); 
+        }
+        weights.push_back(v1); 
+    }
+    for (int i = 0; i < n; i++) {
+        history.push_back(0);
+    }
 }
 
 void PerceptronBP::updateHistories(ThreadID tid, Addr pc, bool uncond,
