@@ -54,7 +54,7 @@ namespace branch_prediction
 PerceptronBP::PerceptronBP(const PerceptronBPParams &params)
     :   n(params.n),
         count_perc(params.count_perc),
-        weights(weights, std::vector<int>(n + 1)),
+        weights(count_perc, std::vector<int>(n + 1)),
         history(n, int)
 {
     // n = params.n;
