@@ -65,28 +65,9 @@ PerceptronBP::PerceptronBP(const PerceptronBPParams &params)
     for (int i = 0; i < n; i++) {
         history.push_back(0);
     }
-
-    // if (!isPowerOf2(localPredictorSize)) {
-    //     fatal("Invalid local predictor size!\n");
-    // }
-
-    // if (!isPowerOf2(localPredictorSets)) {
-    //     fatal("Invalid number of local predictor sets! Check localCtrBits.\n");
-    // }
-
-    // DPRINTF(Fetch, "index mask: %#x\n", indexMask);
-
-    // DPRINTF(Fetch, "local predictor size: %i\n",
-    //         localPredictorSize);
-
-    // DPRINTF(Fetch, "local counter bits: %i\n", localCtrBits);
-
-    // DPRINTF(Fetch, "instruction shift amount: %i\n",
-    //         instShiftAmt);
 }
 
-void
-PerceptronBP::updateHistories(ThreadID tid, Addr pc, bool uncond,
+void PerceptronBP::updateHistories(ThreadID tid, Addr pc, bool uncond,
                          bool taken, Addr target, void * &bp_history)
 {
     for (int i = n - 2; i >= 0; i--)
@@ -94,31 +75,16 @@ PerceptronBP::updateHistories(ThreadID tid, Addr pc, bool uncond,
         history[i + 1] = history[i];
     }
     history[0] = taken ? 1 : -1;
-    // Place holder for a function that is called to update predictor history
 }
 
 
 bool
 PerceptronBP::lookup(ThreadID tid, Addr branch_addr, void * &bp_history)
 {
-    bool taken;
-    unsigned local_predictor_idx = getLocalIndex(branch_addr);
-
-    DPRINTF(Fetch, "Looking up index %#x\n",
-            local_predictor_idx);
-
-    uint8_t counter_val = localCtrs[local_predictor_idx];
-
-    DPRINTF(Fetch, "prediction is %i.\n",
-            (int)counter_val);
-
-    taken = getPrediction(local_predictor_idx);
-
-    return taken;
+    return getPrediction(getLocalIndex(branch_addr));
 }
 
-void
-PerceptronBP::update(ThreadID tid, Addr branch_addr, bool taken, void *&bp_history,
+void PerceptronBP::update(ThreadID tid, Addr branch_addr, bool taken, void *&bp_history,
                 bool squashed, const StaticInstPtr & inst, Addr target)
 {
     if (taken != getPrediction(getLocalIndex(branch_addr))) {
@@ -145,7 +111,7 @@ inline
 unsigned
 PerceptronBP::getLocalIndex(Addr &branch_addr)
 {
-    return (branch_addr >> instShiftAmt) & (count_perc - 1);
+    return (branch_addr >> 2) & (count_perc - 1);
 }
 
 
