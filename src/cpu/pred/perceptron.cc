@@ -55,7 +55,7 @@ PerceptronBP::PerceptronBP(const PerceptronBPParams &params)
     :   n(params.n),
         count_perc(params.count_perc),
         perceptronTable(perceptronCount, std::vector<int>(n + 1)),
-        perceptronTable(perceptronCount, int)
+        perceptronTable(n, int)
 {
     // n = params.n;
     // count_perc = params.count_perc;
