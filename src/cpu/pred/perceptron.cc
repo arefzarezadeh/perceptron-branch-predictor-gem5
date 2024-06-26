@@ -52,6 +52,9 @@ namespace branch_prediction
 {
 
 PerceptronBP::PerceptronBP(const PerceptronBPParams &params)
+    // :   n(params.n),
+    //     perceptronTable(perceptronCount, std::vector<int>(n)),
+    //     perceptronTable(perceptronCount, std::vector<int>(n))
 {
     n = params.n;
     count_perc = params.count_perc;
@@ -60,7 +63,7 @@ PerceptronBP::PerceptronBP(const PerceptronBPParams &params)
         for (int j = 0; j <= n; j++) { 
             v1.push_back(0); 
         }
-        vec.push_back(v1); 
+        weights.push_back(v1); 
     }
     for (int i = 0; i < n; i++) {
         history.push_back(0);

@@ -107,8 +107,8 @@ class PerceptronBP : public BPredUnit
     /** Array of counters that make up the local predictor. */
     // std::vector<SatCounter8> localCtrs;
 
-    std::vector<std::vector<SatCounter8>> weights;
-    std::vector<SatCounter8> history;
+    std::vector<std::vector<int>> weights;
+    std::vector<int> history;
     int n;
     int count_perc;
     /** Mask to get index bits. */
