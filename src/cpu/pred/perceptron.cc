@@ -56,7 +56,7 @@ PerceptronBP::PerceptronBP(const PerceptronBPParams &params)
     n = params.n;
     count_perc = params.count_perc;
     for (int i = 0; i < count_perc; i++) {  
-        vector<int> v1;
+        std::vector<int> v1;
         for (int j = 0; j <= n; j++) { 
             v1.push_back(0); 
         }

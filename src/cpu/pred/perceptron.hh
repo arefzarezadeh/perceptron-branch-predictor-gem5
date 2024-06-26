@@ -90,10 +90,10 @@ class PerceptronBP : public BPredUnit
      *  @param count The value of the counter.
      *  @return The prediction based on the counter value.
      */
-    inline bool getPrediction(uint8_t &count);
+    inline bool getPrediction(int current_perc);
 
     /** Calculates the local index based on the PC. */
-    inline unsigned getLocalIndex(Addr &PC);
+    inline unsigned getLocalIndex(Addr &branch_addr);
 
     /** Size of the local predictor. */
     // const unsigned localPredictorSize;
