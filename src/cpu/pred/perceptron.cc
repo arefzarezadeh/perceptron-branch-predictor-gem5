@@ -92,7 +92,7 @@ void PerceptronBP::update(ThreadID tid, Addr branch_addr, bool taken, void *&bp_
                 bool squashed, const StaticInstPtr & inst, Addr target)
 {
     int current_perc = getLocalIndex(branch_addr);
-    if (taken != getPrediction()) {
+    if (taken != getPrediction(current_perc)) {
         int t = taken ? 1 : -1;
         for (int i = 1; i <= n; i++) {
             weights[current_perc][i] += t * history[i - 1];
