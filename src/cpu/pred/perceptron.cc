@@ -91,12 +91,13 @@ PerceptronBP::lookup(ThreadID tid, Addr branch_addr, void * &bp_history)
 void PerceptronBP::update(ThreadID tid, Addr branch_addr, bool taken, void *&bp_history,
                 bool squashed, const StaticInstPtr & inst, Addr target)
 {
-    if (taken != getPrediction(getLocalIndex(branch_addr))) {
+    int current_perc = getLocalIndex(branch_addr);
+    if (taken != getPrediction()) {
         int t = taken ? 1 : -1;
         for (int i = 1; i <= n; i++) {
             weights[current_perc][i] += t * history[i - 1];
         }
-        weights[current_perc][i] += t;
+        weights[current_perc][0] += t;
     }
 }
 
