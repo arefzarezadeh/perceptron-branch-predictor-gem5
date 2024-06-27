@@ -94,7 +94,7 @@ void PerceptronBP::update(ThreadID tid, Addr branch_addr, bool taken, void *&bp_
     for (int i = 0; i < n; i++) {
         sum += weights[current_perc][i + 1] * history[i];
     }
-    if (taken != (sum >= 0) || (sum <= theta && sum >= -theta)) {
+    if (taken != (sum >= 0) && (sum <= theta && sum >= -theta)) {
         int t = taken ? 1 : -1;
         for (int i = 1; i <= n; i++) {
             weights[current_perc][i] += t * history[i - 1];
