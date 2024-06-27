@@ -163,7 +163,7 @@ class PerceptronBP(BranchPredictor):
 
     count_perc = Param.Unsigned(8, "number of perceptrons")
     n = Param.Unsigned(15, "number of weights in each perceptron")
-    theta = Param.Unsigned(5, "the threshold")
+    theta = Param.Unsigned(16, "the threshold")
 
 class LocalBP(BranchPredictor):
     type = "LocalBP"
