@@ -161,8 +161,9 @@ class PerceptronBP(BranchPredictor):
     cxx_class = "gem5::branch_prediction::PerceptronBP"
     cxx_header = "cpu/pred/perceptron.hh"
 
-    count_perc = Param.Unsigned(8, "Size of local predictor")
-    n = Param.Unsigned(15, "size of folan")
+    count_perc = Param.Unsigned(8, "number of perceptrons")
+    n = Param.Unsigned(15, "number of weights in each perceptron")
+    theta = Param.Unsigned(32, "the threshold")
 
 class LocalBP(BranchPredictor):
     type = "LocalBP"

@@ -16,6 +16,7 @@ struct PerceptronBPParams
     PerceptronBP * create();
     int count_perc;
     int n;
+    int theta;
 };
 
 #endif // __PARAMS__PerceptronBP__

@@ -53,13 +53,10 @@ namespace branch_prediction
 
 PerceptronBP::PerceptronBP(const PerceptronBPParams &params)
     :   BPredUnit(params)
-    // :   n(params.n),
-    //     count_perc(params.count_perc),
-    //     weights(count_perc, std::vector<int>(n + 1)),
-    //     history(n, int)
 {
     n = params.n;
     count_perc = params.count_perc;
+    theta = params.theta;
     for (int i = 0; i < count_perc; i++) {  
         std::vector<int> v1;
         for (int j = 0; j <= n; j++) { 
@@ -93,7 +90,11 @@ void PerceptronBP::update(ThreadID tid, Addr branch_addr, bool taken, void *&bp_
                 bool squashed, const StaticInstPtr & inst, Addr target)
 {
     int current_perc = getLocalIndex(branch_addr);
-    if (taken != getPrediction(current_perc)) {
+    int sum = weights[current_perc][0];
+    for (int i = 0; i < n; i++) {
+        sum += weights[current_perc][i + 1] * history[i];
+    }
+    if (taken != (sum >= 0) || (sum <= theta && sum >= -theta)) {
         int t = taken ? 1 : -1;
         for (int i = 1; i <= n; i++) {
             weights[current_perc][i] += t * history[i - 1];

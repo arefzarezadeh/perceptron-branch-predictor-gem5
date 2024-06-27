@@ -111,6 +111,7 @@ class PerceptronBP : public BPredUnit
     std::vector<int> history;
     int n;
     int count_perc;
+    int theta;
     /** Mask to get index bits. */
     // const unsigned indexMask;
 };
